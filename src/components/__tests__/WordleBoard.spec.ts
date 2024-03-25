@@ -75,7 +75,17 @@ describe('WordleBoard', () => {
       expect(wrapper.text()).not.toContain(VICTORY_MESSAGE);
       expect(wrapper.text()).not.toContain(DEFEAT_MESSAGE);
     });
-    it.todo('player guesses are not case-sensitive');
-    it.todo('player guesses can only contain letters');
+
+    it('player guesses are not case-sensitive', async () => {
+      await playerSubmitsGuess(wordOfTheDay.toLowerCase());
+
+      expect(wrapper.text()).toContain(VICTORY_MESSAGE);
+    });
+
+    it('player guesses can only contain letters', async () => {
+      await playerSubmitsGuess('H3!RT');
+
+      expect(wrapper.find<HTMLInputElement>('input[type=text]').element.value).toEqual('HRT');
+    });
   });
 });
