@@ -69,7 +69,12 @@ describe('WordleBoard', () => {
       expect(wrapper.text()).toContain(VICTORY_MESSAGE);
     });
 
-    it.todo('player guesses can only be submitted if they are real words');
+    it('player guesses can only be submitted if they are real words', async () => {
+      await playerSubmitsGuess('QWERT');
+
+      expect(wrapper.text()).not.toContain(VICTORY_MESSAGE);
+      expect(wrapper.text()).not.toContain(DEFEAT_MESSAGE);
+    });
     it.todo('player guesses are not case-sensitive');
     it.todo('player guesses can only contain letters');
   });

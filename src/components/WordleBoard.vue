@@ -18,6 +18,14 @@ const formattedGuessInProgress = computed({
     guessInProgress.value = rawValue.slice(0, WORD_SIZE).toUpperCase();
   }
 });
+
+function onSubmittedGuess() {
+  if (!DICTIONARY.has(guessInProgress.value)) {
+    return;
+  }
+
+  guessSubmitted.value = guessInProgress.value;
+}
 </script>
 
 <template>
@@ -25,7 +33,7 @@ const formattedGuessInProgress = computed({
     type="text"
     :maxlength="WORD_SIZE"
     v-model="formattedGuessInProgress"
-    @keydown.enter="guessSubmitted = guessInProgress"
+    @keydown.enter="onSubmittedGuess"
   />
   <p
     v-if="guessSubmitted.length > 0"
