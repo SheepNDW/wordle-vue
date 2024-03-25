@@ -38,29 +38,20 @@ describe('WordleBoard', () => {
   });
 
   describe('Rules for defining the word of the day', () => {
-    it('if a word of the day provided does not have exactly 5 characters, a warning is emitted', async () => {
-      console.warn = vi.fn();
+    it.each([
+      { wordOfTheDay: 'FLY', reason: 'word-of-the-day must have 5 characters' },
+      { wordOfTheDay: 'tests', reason: 'word-of-the-day must be all in uppercase' },
+      { wordOfTheDay: 'QWERT', reason: 'word-of-the-day must be a valid English word' }
+    ])(
+      'Since $reason: $wordOfTheDay is invalid, therefore a warning must be emitted',
+      async ({ wordOfTheDay }) => {
+        console.warn = vi.fn();
 
-      mount(WordleBoard, { props: { wordOfTheDay: 'TOO_LONG' } });
+        mount(WordleBoard, { props: { wordOfTheDay } });
 
-      expect(console.warn).toHaveBeenCalled();
-    });
-
-    it('if the word of the day is not all in uppercase, a warning is emitted', async () => {
-      console.warn = vi.fn();
-
-      mount(WordleBoard, { props: { wordOfTheDay: 'lower' } });
-
-      expect(console.warn).toHaveBeenCalled();
-    });
-
-    it('if the word of the day is not a real English word, a warning is emitted', async () => {
-      console.warn = vi.fn();
-
-      mount(WordleBoard, { props: { wordOfTheDay: 'QWERT' } });
-
-      expect(console.warn).toHaveBeenCalled();
-    });
+        expect(console.warn).toHaveBeenCalled();
+      }
+    );
 
     it('no warning is emitted if the word of the day provided is a real uppercase English word with 5 characters', async () => {
       console.warn = vi.fn();
