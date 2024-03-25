@@ -1,4 +1,4 @@
-import { beforeEach, describe, expect, it } from 'vitest';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { mount } from '@vue/test-utils';
 import WordleBoard from '~/components/WordleBoard.vue';
@@ -33,5 +33,13 @@ describe('WordleBoard', () => {
   it('no end-of-game message appears if the user has not yet made a guess', async () => {
     expect(wrapper.text()).not.toContain(VICTORY_MESSAGE);
     expect(wrapper.text()).not.toContain(DEFEAT_MESSAGE);
+  });
+
+  it('if a word of the day provided does not have exactly 5 characters, a warning is emitted', async () => {
+    vi.spyOn(console, 'warn');
+
+    mount(WordleBoard, { props: { wordOfTheDay: 'TOO_LONG' } });
+
+    expect(console.warn).toHaveBeenCalled();
   });
 });

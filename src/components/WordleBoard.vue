@@ -2,9 +2,12 @@
 import { ref } from 'vue';
 import { DEFEAT_MESSAGE, VICTORY_MESSAGE } from '~/utils/settings';
 
-defineProps<{
-  wordOfTheDay: string;
-}>();
+defineProps({
+  wordOfTheDay: {
+    type: String,
+    validator: (value: string) => value.length === 5
+  }
+});
 
 const guessInProgress = ref('');
 const guessSubmitted = ref('');
