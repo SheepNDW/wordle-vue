@@ -2,7 +2,7 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { mount } from '@vue/test-utils';
 import WordleBoard from '~/components/WordleBoard.vue';
-import { DEFEAT_MESSAGE, VICTORY_MESSAGE } from '~/utils/settings';
+import { DEFEAT_MESSAGE, VICTORY_MESSAGE, WORD_SIZE } from '~/utils/settings';
 
 describe('WordleBoard', () => {
   const wordOfTheDay = 'TESTS';
@@ -63,7 +63,12 @@ describe('WordleBoard', () => {
   });
 
   describe('Player input', () => {
-    it.todo('player guesses are limited to 5 letters');
+    it(`player guesses are limited to ${WORD_SIZE} letters`, async () => {
+      await playerSubmitsGuess(wordOfTheDay + 'EXTRA');
+
+      expect(wrapper.text()).toContain(VICTORY_MESSAGE);
+    });
+
     it.todo('player guesses can only be submitted if they are real words');
     it.todo('player guesses are not case-sensitive');
     it.todo('player guesses can only contain letters');
