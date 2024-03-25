@@ -1,11 +1,12 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { DEFEAT_MESSAGE, VICTORY_MESSAGE } from '~/utils/settings';
+import { DEFEAT_MESSAGE, VICTORY_MESSAGE, DICTIONARY } from '~/utils/settings';
 
 defineProps({
   wordOfTheDay: {
     type: String,
-    validator: (value: string) => value.length === 5 && value.toUpperCase() === value
+    validator: (value: string) =>
+      value.length === 5 && value.toUpperCase() === value && DICTIONARY.has(value)
   }
 });
 
