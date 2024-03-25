@@ -5,7 +5,7 @@ import { DEFEAT_MESSAGE, VICTORY_MESSAGE } from '~/utils/settings';
 defineProps({
   wordOfTheDay: {
     type: String,
-    validator: (value: string) => value.length === 5
+    validator: (value: string) => value.length === 5 && value.toUpperCase() === value
   }
 });
 
