@@ -35,6 +35,8 @@ function onSubmittedGuess() {
   <input
     type="text"
     :maxlength="WORD_SIZE"
+    autofocus
+    @blur="({ target }) => (target as HTMLInputElement).focus()"
     v-model="formattedGuessInProgress"
     @keydown.enter="onSubmittedGuess"
   />
