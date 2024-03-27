@@ -22,6 +22,12 @@ const isGameOver = computed(() => {
 
 <template>
   <main class="flex flex-col items-center mt-12">
+    <ul>
+      <li v-for="(guess, index) in guessSubmitted" :key="`${index}-${guess}`">
+        {{ guess }}
+      </li>
+    </ul>
+
     <GuessInput @guess-submitted="(guess) => guessSubmitted.push(guess)" />
 
     <p
