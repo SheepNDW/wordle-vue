@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed, ref, triggerRef } from 'vue';
+import GuessView from '~/components/GuessView.vue';
 import { DICTIONARY, WORD_SIZE } from '~/utils/settings';
 
 const emit = defineEmits<{
@@ -33,16 +34,7 @@ function onSubmittedGuess() {
 </script>
 
 <template>
-  <ul class="flex gap-1">
-    <li
-      v-for="(letter, index) in formattedGuessInProgress.padEnd(WORD_SIZE, ' ')"
-      :key="`${letter}-${index}`"
-      class="w-20 h-20 bg-white border border-[hsl(0, 0%, 70%)] flex items-center justify-center text-2rem font-bold"
-      :class="[letter === ' ' ? 'animate-pulse-alt' : '']"
-    >
-      {{ letter }}
-    </li>
-  </ul>
+  <GuessView :guess="formattedGuessInProgress" />
 
   <input
     type="text"

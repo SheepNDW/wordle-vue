@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue';
 import GuessInput from '~/components/GuessInput.vue';
+import GuessView from '~/components/GuessView.vue';
 import { DEFEAT_MESSAGE, DICTIONARY, MAX_GUESSES_COUNT, VICTORY_MESSAGE } from '~/utils/settings';
 
 const props = defineProps({
@@ -24,7 +25,7 @@ const isGameOver = computed(() => {
   <main class="flex flex-col items-center mt-12">
     <ul>
       <li v-for="(guess, index) in guessSubmitted" :key="`${index}-${guess}`">
-        {{ guess }}
+        <GuessView :guess="guess" />
       </li>
     </ul>
 
