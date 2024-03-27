@@ -28,6 +28,7 @@ function onSubmittedGuess() {
   }
 
   emit('guess-submitted', formattedGuessInProgress.value);
+  guessInProgress.value = '';
 }
 </script>
 
