@@ -1,26 +1,37 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
 import GuessInput from '~/components/GuessInput.vue';
-import { DEFEAT_MESSAGE, DICTIONARY, VICTORY_MESSAGE } from '~/utils/settings';
+import { DEFEAT_MESSAGE, DICTIONARY, MAX_GUESSES_COUNT, VICTORY_MESSAGE } from '~/utils/settings';
 
-defineProps({
+const props = defineProps({
   wordOfTheDay: {
     type: String,
     validator: (value: string) => DICTIONARY.has(value)
   }
 });
 
-const guessSubmitted = ref('');
+const guessSubmitted = ref<string[]>([]);
+
+const isGameOver = computed(() => {
+  return (
+    guessSubmitted.value.length === MAX_GUESSES_COUNT ||
+    guessSubmitted.value[guessSubmitted.value.length - 1] === props.wordOfTheDay
+  );
+});
 </script>
 
 <template>
   <main class="flex flex-col items-center mt-12">
-    <GuessInput @guess-submitted="(guess) => (guessSubmitted = guess)" />
+    <GuessInput @guess-submitted="(guess) => guessSubmitted.push(guess)" />
 
     <p
-      v-if="guessSubmitted.length > 0"
+      v-if="isGameOver"
       class="end-of-game-message"
-      v-text="guessSubmitted === wordOfTheDay ? VICTORY_MESSAGE : DEFEAT_MESSAGE"
+      v-text="
+        guessSubmitted[guessSubmitted.length - 1] === wordOfTheDay
+          ? VICTORY_MESSAGE
+          : DEFEAT_MESSAGE
+      "
     />
   </main>
 </template>

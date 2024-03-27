@@ -2,7 +2,7 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { mount } from '@vue/test-utils';
 import WordleBoard from '~/components/WordleBoard.vue';
-import { DEFEAT_MESSAGE, VICTORY_MESSAGE, WORD_SIZE } from '~/utils/settings';
+import { DEFEAT_MESSAGE, MAX_GUESSES_COUNT, VICTORY_MESSAGE, WORD_SIZE } from '~/utils/settings';
 
 describe('WordleBoard', () => {
   const wordOfTheDay = 'TESTS';
@@ -25,11 +25,27 @@ describe('WordleBoard', () => {
       expect(wrapper.text()).toContain(VICTORY_MESSAGE);
     });
 
-    it('a defeat message appears if the user makes a guess that is incorrect', async () => {
-      await playerSubmitsGuess('WRONG');
+    describe.each(
+      Array.from({ length: MAX_GUESSES_COUNT + 1 }, (_, numberOfGuesses) => ({
+        numberOfGuesses,
+        shouldSeeTheDefeatMessage: numberOfGuesses === MAX_GUESSES_COUNT
+      }))
+    )(
+      `a defeat message should appear if the player makes incorrect guesses ${MAX_GUESSES_COUNT} times`,
+      ({ numberOfGuesses, shouldSeeTheDefeatMessage }) => {
+        it(`therefore, for ${numberOfGuesses} guess(es) a defeat message should ${shouldSeeTheDefeatMessage ? '' : 'not'} appear`, async () => {
+          for (let i = 0; i < numberOfGuesses; i++) {
+            await playerSubmitsGuess('WRONG');
+          }
 
-      expect(wrapper.text()).toContain(DEFEAT_MESSAGE);
-    });
+          if (shouldSeeTheDefeatMessage) {
+            expect(wrapper.text()).toContain(DEFEAT_MESSAGE);
+          } else {
+            expect(wrapper.text()).not.toContain(DEFEAT_MESSAGE);
+          }
+        });
+      }
+    );
 
     it('no end-of-game message appears if the user has not yet made a guess', async () => {
       expect(wrapper.text()).not.toContain(VICTORY_MESSAGE);
