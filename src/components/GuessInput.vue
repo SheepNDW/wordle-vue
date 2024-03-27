@@ -32,6 +32,17 @@ function onSubmittedGuess() {
 </script>
 
 <template>
+  <ul class="flex gap-1">
+    <li
+      v-for="(letter, index) in formattedGuessInProgress.padEnd(WORD_SIZE, ' ')"
+      :key="`${letter}-${index}`"
+      class="w-20 h-20 bg-white border border-[hsl(0, 0%, 70%)] flex items-center justify-center text-2rem font-bold"
+      :class="[letter === ' ' ? 'animate-pulse-alt' : '']"
+    >
+      {{ letter }}
+    </li>
+  </ul>
+
   <input
     type="text"
     :maxlength="WORD_SIZE"
@@ -39,5 +50,6 @@ function onSubmittedGuess() {
     @blur="({ target }) => (target as HTMLInputElement).focus()"
     v-model="formattedGuessInProgress"
     @keydown.enter="onSubmittedGuess"
+    class="absolute opacity-0"
   />
 </template>
