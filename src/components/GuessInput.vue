@@ -3,6 +3,10 @@ import { computed, ref, triggerRef } from 'vue';
 import GuessView from '~/components/GuessView.vue';
 import { DICTIONARY, WORD_SIZE } from '~/utils/settings';
 
+defineProps<{
+  disabled: boolean;
+}>();
+
 const emit = defineEmits<{
   'guess-submitted': [guess: string];
 }>();
@@ -34,11 +38,12 @@ function onSubmittedGuess() {
 </script>
 
 <template>
-  <GuessView :guess="formattedGuessInProgress" />
+  <GuessView v-if="!disabled" :guess="formattedGuessInProgress" />
 
   <input
     type="text"
     :maxlength="WORD_SIZE"
+    :disabled="disabled"
     autofocus
     @blur="({ target }) => (target as HTMLInputElement).focus()"
     v-model="formattedGuessInProgress"
