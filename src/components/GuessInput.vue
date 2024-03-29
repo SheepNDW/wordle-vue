@@ -13,6 +13,8 @@ const emit = defineEmits<{
 
 const guessInProgress = ref<string>('');
 
+const hasFailedValidation = ref<boolean>(false);
+
 const formattedGuessInProgress = computed({
   get: () => guessInProgress.value,
   set: (rawValue: string) => {
@@ -29,6 +31,8 @@ const formattedGuessInProgress = computed({
 
 function onSubmittedGuess() {
   if (!DICTIONARY.has(formattedGuessInProgress.value)) {
+    hasFailedValidation.value = true;
+    setTimeout(() => (hasFailedValidation.value = false), 500);
     return;
   }
 
@@ -38,7 +42,11 @@ function onSubmittedGuess() {
 </script>
 
 <template>
-  <GuessView v-if="!disabled" :guess="formattedGuessInProgress" />
+  <GuessView
+    v-if="!disabled"
+    :class="{ 'animate-shake-x animate-duration-100 animate-iteration-2': hasFailedValidation }"
+    :guess="formattedGuessInProgress"
+  />
 
   <input
     type="text"
