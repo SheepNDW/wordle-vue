@@ -17,6 +17,7 @@ withDefaults(
     <li
       v-for="(letter, index) in guess.padEnd(WORD_SIZE, ' ')"
       :key="`${letter}-${index}`"
+      :data-letter-feedback="shouldFlip ? 'unknown' : null"
       class="w-20 h-20 border border-[hsl(0, 0%, 70%)] flex items-center justify-center text-2rem font-bold letter"
       :class="{ 'animate-pulse-alt': letter === ' ', 'with-flips': shouldFlip }"
     >
