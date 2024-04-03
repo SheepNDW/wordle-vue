@@ -1,15 +1,16 @@
 <script setup lang="ts">
 import { WORD_SIZE } from '~/utils/settings';
 
-withDefaults(
-  defineProps<{
-    guess: string;
-    shouldFlip?: boolean;
-  }>(),
-  {
-    shouldFlip: false
-  }
-);
+const props = defineProps<{
+  guess: string;
+  answer?: string;
+}>();
+
+function getFeedback(letterPosition: number) {
+  if (!props.answer) return null;
+
+  return props.answer[letterPosition] === props.guess[letterPosition] ? 'correct' : 'incorrect';
+}
 </script>
 
 <template>
@@ -17,9 +18,10 @@ withDefaults(
     <li
       v-for="(letter, index) in guess.padEnd(WORD_SIZE, ' ')"
       :key="`${letter}-${index}`"
-      :data-letter-feedback="shouldFlip ? 'correct' : null"
+      :data-letter="letter"
+      :data-letter-feedback="getFeedback(index)"
       class="w-20 h-20 border border-[hsl(0, 0%, 70%)] flex items-center justify-center text-2rem font-bold letter"
-      :class="{ 'animate-pulse-alt': letter === ' ', 'with-flips': shouldFlip }"
+      :class="{ 'animate-pulse-alt': letter === ' ', 'with-flips': answer }"
     >
       {{ letter }}
     </li>
