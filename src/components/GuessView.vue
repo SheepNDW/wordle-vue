@@ -9,11 +9,14 @@ const props = defineProps<{
 function getFeedback(letterPosition: number): null | 'correct' | 'incorrect' | 'almost' {
   if (!props.answer) return null;
 
-  if (!props.answer.includes(props.guess[letterPosition])) {
+  const letterGuessed = props.guess[letterPosition];
+  const letterExpected = props.answer[letterPosition];
+
+  if (!props.answer.includes(letterGuessed)) {
     return 'incorrect';
   }
 
-  return props.answer[letterPosition] === props.guess[letterPosition] ? 'correct' : 'almost';
+  return letterExpected === letterGuessed ? 'correct' : 'almost';
 }
 </script>
 
@@ -37,6 +40,16 @@ function getFeedback(letterPosition: number): null | 'correct' | 'incorrect' | '
   --front-color: hsl(0, 0%, 99%);
   --back-color: hsl(0, 0%, 70%);
   background-color: var(--front-color);
+}
+
+[data-letter-feedback='correct'] {
+  --back-color: hsl(120, 25%, 65%);
+}
+[data-letter-feedback='almost'] {
+  --back-color: hsl(40, 65%, 48%);
+}
+[data-letter-feedback='incorrect'] {
+  --back-color: hsl(0, 0%, 70%);
 }
 
 .with-flips:nth-of-type(1) {
