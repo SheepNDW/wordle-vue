@@ -1,5 +1,4 @@
 import WordleBoard from '../../src/components/WordleBoard.vue';
-import { VICTORY_MESSAGE } from '../../src/utils/settings';
 import '@unocss/reset/tailwind.css';
 import 'virtual:uno.css';
 
@@ -18,6 +17,6 @@ describe('<WordleBoard />', () => {
     cy.focused().type(wordOfTheDay);
     cy.focused().type('{enter}');
 
-    cy.contains(VICTORY_MESSAGE);
+    cy.matchImageSnapshot();
   });
 });
